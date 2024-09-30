@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { connectDB } from '../db';
-import { Token } from '../models/user.type';
+import { Token } from '../models/token.type';
 
 const stroeAccessToken = async (accessToken: Token) => {
     const database = await connectDB();
@@ -18,7 +18,7 @@ export const generateAccessToken = async (userId: string): Promise<Token> => {
     }
 
         // delete existing token
-    await deleteExistingToken(userId);
+    // await deleteExistingToken(userId);
 
     const AccessToken: Token = {
         userId,

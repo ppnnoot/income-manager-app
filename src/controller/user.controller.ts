@@ -22,7 +22,6 @@ export const getUserByUsername = async (username: string) => {
 export const getUserById = async (userId: string | undefined)=> {
     const database = await connectDB();
     const user = await database.collection('users').findOne({ _id: new ObjectId(userId) });
-    console.log(user);
     return user ? { id: user._id.toString(), username: user.username } : null;
 };
 
@@ -66,7 +65,6 @@ export const loginUser = async (req: TypedRequestBody<User>, res: TypedResponse<
     const accessToken = await generateAccessToken(user._id.toString());
     console.log(accessToken)
 
-
     // Login successful)
     console.log('Login successful');
     return res.status(200).json({ 
@@ -74,7 +72,7 @@ export const loginUser = async (req: TypedRequestBody<User>, res: TypedResponse<
         user: { 
             id: user._id, 
             username: user.username, 
-            token: `${user._id}-${accessToken.token}`,
+            token: `Bearer ${user._id}-${accessToken.token}`,
         }
     });
 };
