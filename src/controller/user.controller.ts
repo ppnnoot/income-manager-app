@@ -1,8 +1,6 @@
 import { TypedRequestBody, TypedRequestQuery, TypedResponse } from "../interfaces/express.type";
 import { Message, User } from "../models/user.type";
 import { hashPassword, checkPassword } from "../utils/auth"
-import logger from "../utils/logger";
-import { generateToken, storeToken } from "../utils/token";
 import { connectDB } from "./db";
 
 
@@ -48,18 +46,13 @@ export const loginUser = async (req: TypedRequestBody<User>, res: TypedResponse<
         return res.status(401).json({ message: 'Invalid email or password' });
     }
 
-    const token = generateToken();
-    await storeToken(user._id, token)
-
     // Login successful)
-    logger.info(`Login successful: ${email}`);
     return res.status(200).json({ 
         message: 'Login successful',
         user: { 
             id: user._id, 
             email: user.email, 
-            password: user.password,
-            token: token }
+        }
 
     });
 };
