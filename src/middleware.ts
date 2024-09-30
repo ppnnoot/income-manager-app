@@ -1,9 +1,10 @@
-import { NextFunction, Response } from "express"
+import { NextFunction, Response, Request } from "express"
 import { CustomRequest, TypedResponse } from "./interfaces/express.type";
-import { Message } from "./models/user.type";
+import { Message } from "./models/message.type";
 
 
 export const authenticate = async ( req: CustomRequest, res: TypedResponse<Message>, next: NextFunction): Promise<void> => {
+    
     const token = req.headers['authorization'];
     if (!token) {
         return res.status(401).json({ message: 'Unauthorized, no token provided' });

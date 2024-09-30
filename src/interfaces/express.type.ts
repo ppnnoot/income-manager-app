@@ -16,5 +16,5 @@ export interface TypedResponse<T> extends Express.Response {
 }
 
 export interface CustomRequest extends Request {
-    userId?: string; // สามารถเก็บ userId ที่ถูกแนบเข้ามา
+    userId?: string;
 }
