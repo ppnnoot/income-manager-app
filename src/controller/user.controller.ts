@@ -2,7 +2,7 @@ import { TypedRequestBody, TypedRequestQuery, TypedResponse } from "../interface
 import { Message, User } from "../models/user.type";
 import { hashPassword, checkPassword } from "../utils/bcrypt"
 import { generateAccessToken } from "../utils/token";
-import { connectDB } from "./db";
+import { connectDB } from "../db"
 
 
 
@@ -30,6 +30,7 @@ export const registerUser = async (req: TypedRequestBody<User>, res: TypedRespon
     const hashedPassword = await hashPassword(password);
     await createUser({ email, password: hashedPassword });
 
+    console.log('Registered successfully' + email);
     return res.status(201).json({ message: 'Registered successfully' });
 };
 
@@ -50,6 +51,7 @@ export const loginUser = async (req: TypedRequestBody<User>, res: TypedResponse<
     const accessToken = generateAccessToken(user._id.toString());
 
     // Login successful)
+    console.log('Login successful' + email);
     return res.status(200).json({ 
         message: 'Login successful',
         user: { 

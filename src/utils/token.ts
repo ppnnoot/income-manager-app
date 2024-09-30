@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { connectDB } from '../controller/db';
+import { connectDB } from '../db';
 import { Token } from '../models/user.type';
 
 export const generateAccessToken = (userId: string): Token => {

@@ -1,6 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
-import { connectDB } from "./controller/db";
+import { connectDB } from "./db";
 import dotenv from "dotenv";
 import route from "./route";
 
