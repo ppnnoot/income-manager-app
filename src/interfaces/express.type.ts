@@ -1,3 +1,4 @@
+import { Request } from 'express';
 import { Query } from "express-serve-static-core";
 import { Send } from 'express-serve-static-core';
 
@@ -9,7 +10,11 @@ export interface TypedRequestBody<T> extends Express.Request {
   body: T
 }
 
-export interface TypedResponse<ResBody> extends Express.Response {
+export interface TypedResponse<T> extends Express.Response {
   status?: any;
-  json: Send<ResBody, this>;
+  json: Send<T, this>;
+}
+
+export interface CustomRequest extends Request {
+    userId?: string; // สามารถเก็บ userId ที่ถูกแนบเข้ามา
 }

@@ -1,18 +1,20 @@
-// install npm i uuid @types/uuid
-
 import { v4 as uuidv4 } from 'uuid';
 import { connectDB } from '../controller/db';
+import { Token } from '../models/user.type';
 
-export const generateToken = (): string => {
-    return uuidv4();
-}
+export const generateAccessToken = (userId: string): Token => {
+    const tokenData : Token = {
+        userId,
+        token: uuidv4(),
+        createdAt: new Date(),
+        expiresAt: new Date(Date.now() + 60 * 60 * 1000), // 1 hour
+    }
 
-export const storeToken = async (userId: object, token: string) => {
-    const database = await connectDB();
-    await database.collection('tokens').insertOne({ userId, token });
-}
+    stroeAccessToken(tokenData);
+    return tokenData;
+};
 
-export const getUserByToken = async (token: string) => {
-    const database = await connectDB();
-    return await database.collection('tokens').findOne({ token });
-}
+export const stroeAccessToken = async (accessToken: Token) => {
+    const db = await connectDB();
+    await db.collection('tokens').insertOne(accessToken);
+};

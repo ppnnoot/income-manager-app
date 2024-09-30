@@ -1,7 +1,9 @@
 import { TypedRequestBody, TypedRequestQuery, TypedResponse } from "../interfaces/express.type";
 import { Message, User } from "../models/user.type";
-import { hashPassword, checkPassword } from "../utils/auth"
+import { hashPassword, checkPassword } from "../utils/bcrypt"
+import { generateAccessToken } from "../utils/token";
 import { connectDB } from "./db";
+
 
 
 
@@ -37,14 +39,15 @@ export const loginUser = async (req: TypedRequestBody<User>, res: TypedResponse<
 
     const user = await getUserByEmail(email);
     if (!user) {
-        return res.status(401).json({ message: 'This email does not exist, Please register first' });
+        return res.status(401).json({ message: 'User not found' });
     }
 
     const isPasswordValid = await checkPassword(password, user.password);
-    
     if (!isPasswordValid) {
         return res.status(401).json({ message: 'Invalid email or password' });
     }
+
+    const accessToken = generateAccessToken(user._id.toString());
 
     // Login successful)
     return res.status(200).json({ 
@@ -52,8 +55,8 @@ export const loginUser = async (req: TypedRequestBody<User>, res: TypedResponse<
         user: { 
             id: user._id, 
             email: user.email, 
+            token: accessToken,
         }
-
     });
 };
 

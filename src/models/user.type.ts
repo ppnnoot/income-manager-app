@@ -9,3 +9,10 @@ export type User = {
 export type Message = {
     message: string
 }
+
+export interface Token {
+    userId: string;       
+    token: string;        
+    createdAt: Date;      
+    expiresAt: Date;      
+}
