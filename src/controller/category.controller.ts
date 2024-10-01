@@ -12,28 +12,52 @@ export const getCategoryByUserId = async (userId: string, categoryId: number) =>
     return categoryData;
 };
 
-export const createCategory = async ( req: CustomRequest, res: TypedResponse<Message> ): Promise<void> => {
+export const getCategory = async ( req: CustomRequest, res: TypedResponse<Message> ): Promise<void> => {
 
-    const categoryId : number = req.body.categoryId;
-    const categoryName : string = req.body.categoryName;
-    const userId = req.userId;
+    const { categoryId } = req.params;
+    const { userId } = req;
+    console.log(categoryId, userId)
 
-    if (!categoryId || !categoryName || !userId) {
-        return res.status(400).json({ message: 'Category ID and name is required' });
-    }
-
-    const isExisting = await getCategoryByUserId(userId, categoryId);
-    if (isExisting) {
-        return res.status(400).json({ message: 'Category name already exists' });
+    if (!categoryId || !userId) {
+        return res.status(400).json({ message: 'Parameter is required' });
     }
 
     try {
         const database = await connectDB();
+        const category = await database.collection('categories').findOne({ categoryId, userId });
+        if (!category) {
+            return res.status(404).json({ message: 'Category not found' });
+        }
 
-        const categoryData = { categoryId, categoryName, userId };
+        return res.status(200).json({ message: 'Category retrieved successfully', category });
+    } catch (error) {
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+
+}
+
+export const createCategory = async ( req: CustomRequest, res: TypedResponse<Message> ): Promise<void> => {
+
+    const { categoryId, categoryName } = req.body;
+    const { userId } = req;
+
+    if (!categoryId || !categoryName || !userId) {
+        return res.status(400).json({ message: 'Category id and name are required' });
+    }
+
+    const categoryData = { categoryId, categoryName, userId };
+
+    try {
+        const database = await connectDB();
+        
+        const isExisting = await database.collection('categories').findOne(categoryData);
+        if (isExisting) {
+            return res.status(400).json({ message: 'Category name already exists' });
+        }
+    
         await database.collection('categories').insertOne(categoryData);
-
         return res.status(201).json({ message: 'Category created successfully' , category: categoryData });
+
     } catch (error) {
         console.error('Error creating category:', error);
         return res.status(500).json({ message: 'Internal server error' });

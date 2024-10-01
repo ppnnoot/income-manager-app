@@ -2,8 +2,8 @@ import express from 'express';
 import { authenticate } from './middleware';
 import { CustomRequest } from './interfaces/express.type';
 import { getUserById, loginUser, registerUser } from './controller/user.controller';
-import { createAccount, deleteAccount, getAccounts } from './controller/account.controller';
-import { createCategory, deleteCategory, getCategories } from './controller/category.controller';
+import { createAccount, deleteAccount, getAccounts, getAccount } from './controller/account.controller';
+import { createCategory, deleteCategory, getCategories, getCategory } from './controller/category.controller';
 
 
 const router = express.Router();
@@ -20,12 +20,14 @@ router.post('/register', registerUser);
 
 router.get('/accounts', authenticate, getAccounts);
 router.post('/account', authenticate, createAccount);
-router.delete('/accounts/:id', authenticate, deleteAccount);
+router.get('/account/:id', authenticate, getAccount);
+router.delete('/account/:id', authenticate, deleteAccount);
 
 
 router.get('/categories', authenticate, getCategories);
 router.post('/category', authenticate, createCategory);
-router.delete('/category/:name', authenticate, deleteCategory);
+router.get('/category/:id', authenticate, getCategory);
+router.delete('/category/:id', authenticate, deleteCategory);
 
 
 // router.post('/transaction', authenticate, createTransaction);

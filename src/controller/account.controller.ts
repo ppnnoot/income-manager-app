@@ -5,23 +5,34 @@ import { Message } from "../models/message.type";
 import { Account } from "../models/account.type";
 import { Request, Response } from 'express';
 
-const stroeAccount = async (account: Account): Promise<void> => {
-    const database = await connectDB();
-    await database.collection('accounts').insertOne(account);
-};
+export const getAccount = async ( req: CustomRequest, res: TypedResponse<Message> ): Promise<void> => {
+    const { id } = req.params; // ดึง accountId จาก params
+    const { userId } = req;
 
-export const getAccountByUserId = async (userId: string, nameAccount: string) => {
-    const database = await connectDB();
-    const accountData = await database.collection('accounts').findOne({ userId, nameAccount });
-    return accountData;
-};
+    if (!id || !userId) {
+        return res.status(400).json({ message: 'Account ID and User ID are required' });
+    }
+
+    try {
+        const database = await connectDB();
+        const account = await database.collection('accounts').findOne({ accountId: Number(id), userId }); // เปลี่ยนเป็น Number(id) ถ้าจำเป็น
+
+        if (!account) {
+            return res.status(404).json({ message: 'Account not found' });
+        }
+
+        return res.status(200).json({ message: 'Account retrieved successfully', account });
+    } catch (error) {
+        console.error('Error retrieving account:', error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+}
 
 export const getAccounts = async ( req: CustomRequest, res: TypedResponse<{ accounts: Account[] }> ): Promise<void> => {
-    
     const { userId } = req
 
     if (!userId) {
-        return res.status(400).json({ message: 'User ID is required' });
+        return res.status(400).json({ message: 'Authorization failed' });
     }
 
     try {
@@ -40,25 +51,26 @@ export const getAccounts = async ( req: CustomRequest, res: TypedResponse<{ acco
 };
 
 export const createAccount = async ( req: CustomRequest, res: TypedResponse<{ message: string; account: Account }>): Promise<void> => {
+    const { accountId, accountName} = req.body;
+    const { userId } = req;
 
-    const accountId: number = req.body.accountId;
-    const accountName: string = req.body.accountName;
-    const userId  = req.userId;
-
-    if (!accountName || !userId) {
-        return res.status(400).json({ message: 'Account name and are required' });
-    }
-
-    // Check if account name already exists
-    const isExisting = await getAccountByUserId(userId, accountName);
-    if (isExisting) {
-        return res.status(400).json({ message: 'Account name already exists' });
+    if (!accountId || !accountName || !userId) {
+        return res.status(400).json({ message: 'account id and name are required' });
     }
 
     const accountData = {accountId, accountName, userId };
+
     try {
-        await stroeAccount(accountData);
+        const database = await connectDB();
+
+        const isExisting = await database.collection('accounts').findOne(accountData);
+        if (isExisting) {
+            return res.status(400).json({ message: 'Account name already exists' });
+        }
+
+        await database.collection('accounts').insertOne(accountData)
         res.status(201).json({ message: 'Account created successfully', account: accountData });
+
     } catch (error) {
         res.status(500).json({ message: 'Internal server error' });
     }
@@ -86,29 +98,4 @@ export const deleteAccount = async ( req: CustomRequest, res: TypedResponse<{ me
         return res.status(500).json({ message: 'Internal server error' });
     }
 };
-
-// export const deleteAccountByQuery = async ( req: CustomRequest, res: TypedResponse<Message> ): Promise<void> => {
-
-//     const accountName = req.query.accountName;
-//     const userId = req.userId;
-
-//     if (!accountName || !userId) {
-//         return res.status(400).json({ message: 'Account name is required' });
-//     }
-
-//     try {
-//         const database = await connectDB();
-//         const result = await database.collection('accounts').deleteOne({ accName: accountName, userId: userId });
-
-//         if (result.deletedCount === 0) {
-//             return res.status(404).json({ message: 'Account to be delete not found' });
-//         }
-
-//         return res.status(200).json({ message: 'Account deleted successfully', accountName: accountName });
-//     } catch (error) {
-//         console.error('Error deleting account:', error);
-//         return res.status(500).json({ message: 'Internal server error' });
-//     }
-
-// }
 
