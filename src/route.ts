@@ -6,8 +6,10 @@ import {
     createAccount, 
     deleteAccountById, 
     deleteAccountByQuery, 
-    getAccountsByUserId 
+    getAccounts
 } from './controller/account.controller';
+
+import { createCategory, deleteCategoryByName, getCategories } from './controller/category.controller';
 
 
 const router = express.Router();
@@ -21,10 +23,16 @@ router.get('/protected', authenticate, async (req: CustomRequest, res) => {
 router.post('/login', loginUser);
 router.post('/register', registerUser);
 
-router.get('/accounts', authenticate, getAccountsByUserId);
+router.get('/accounts', authenticate, getAccounts);
 router.post('/account', authenticate, createAccount);
 router.delete('/accounts/:id', authenticate, deleteAccountById);
 router.delete('/account', authenticate, deleteAccountByQuery);
+
+router.get('/categories', authenticate, getCategories);
+router.post('/category', authenticate, createCategory);
+router.delete('/category/:name', authenticate, deleteCategoryByName);
+
+
 
 export default router;
  

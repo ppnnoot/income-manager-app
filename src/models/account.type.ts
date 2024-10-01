@@ -1,5 +1,5 @@
 export type Account = {
-    accName: string,
+    nameAccount: string,
     balance?: number,
     userId: string
 }

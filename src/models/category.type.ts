@@ -1,4 +1,4 @@
-export type ExpenseCate = { 
+export type Category = { 
     nameCategory: string; 
     userId: string; 
 };

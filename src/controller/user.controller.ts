@@ -32,8 +32,8 @@ export const registerUser = async (req: TypedRequestBody<User>, res: TypedRespon
         return res.status(400).json({ message: 'Username and password are required' });
     }
     
-    const existingUser = await getUserByUsername(username);
-    if (existingUser) {
+    const isExisting = await getUserByUsername(username);
+    if (isExisting) {
         return res.status(400).json({ message: 'Email already exists' });
     }
 

@@ -10,7 +10,13 @@ const stroeAccount = async (account: Account): Promise<void> => {
     await database.collection('accounts').insertOne(account);
 };
 
-export const getAccountsByUserId = async (
+export const getAccountByUserId = async (userId: string, nameAccount: string) => {
+    const database = await connectDB();
+    const accountData = await database.collection('accounts').findOne({ userId, nameAccount });
+    return accountData;
+};
+
+export const getAccounts = async (
     req: CustomRequest,
     res: TypedResponse<{ accounts: Account[] }>,
 ): Promise<void> => {
@@ -37,20 +43,26 @@ export const getAccountsByUserId = async (
 
 export const createAccount = async (
     req: CustomRequest,
-    res: TypedResponse<{ message: string; account: Omit<Account, 'id'> }>,
+    res: TypedResponse<{ message: string; account: Account }>,
 ): Promise<void> => {
-    const { accountName } = req.body;
+
+    const nameAccount: string = req.body.nameAccount;
     const { userId } = req;
 
-    if (!accountName || !userId) {
-        return res.status(400).json({ message: 'Account name and user ID are required' });
+    if (!nameAccount || !userId) {
+        return res.status(400).json({ message: 'Account name and are required' });
     }
 
-    const newAccount: Omit<Account, 'id'> = { accName: accountName, balance: 0, userId };
+    // Check if account name already exists
+    const isExisting = await getAccountByUserId(userId, nameAccount);
+    if (isExisting) {
+        return res.status(400).json({ message: 'Account name already exists' });
+    }
 
+    const accountData = { nameAccount, userId };
     try {
-        await stroeAccount(newAccount);
-        res.status(201).json({ message: 'Account created successfully', account: newAccount });
+        await stroeAccount(accountData);
+        res.status(201).json({ message: 'Account created successfully', account: accountData });
     } catch (error) {
         res.status(500).json({ message: 'Internal server error' });
     }
