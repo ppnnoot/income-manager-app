@@ -10,6 +10,7 @@ import {
 } from './controller/account.controller';
 
 import { createCategory, deleteCategoryByName, getCategories } from './controller/category.controller';
+// import { createTransaction } from './controller/transaction.controller';
 
 
 const router = express.Router();
@@ -33,6 +34,6 @@ router.post('/category', authenticate, createCategory);
 router.delete('/category/:name', authenticate, deleteCategoryByName);
 
 
-
+// router.post('/transaction', authenticate, createTransaction);
 export default router;
  
