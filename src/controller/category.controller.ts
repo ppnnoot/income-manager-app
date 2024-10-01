@@ -6,6 +6,11 @@ import { Account } from "../models/account.type";
 import { Request, Response } from 'express';
 import { Category } from "../models/category.type";
 
+export const getCategoryById = async ( categoryId : number ): Promise<Category | null> => {
+    const database = await connectDB();
+    const category = await database.collection('categories').findOne({ categoryId }) as Category | null;
+    return category ? category : null;
+}
 
 export const getCategory = async ( req: CustomRequest, res: TypedResponse<Message> ): Promise<void> => {
     const { id : categoryId } = req.params;

@@ -4,6 +4,7 @@ import { CustomRequest } from './interfaces/express.type';
 import { getUserById, loginUser, registerUser } from './controller/user.controller';
 import { createAccount, deleteAccount, getAccounts, getAccount } from './controller/account.controller';
 import { createCategory, deleteCategory, getCategories, getCategory } from './controller/category.controller';
+import { createTransaction } from './controller/transaction.controller';
 
 
 const router = express.Router();
@@ -30,6 +31,7 @@ router.get('/category/:id', authenticate, getCategory);
 router.delete('/category/:id', authenticate, deleteCategory);
 
 
-// router.post('/transaction', authenticate, createTransaction);
+router.post('/transaction', authenticate, createTransaction);
+
 export default router;
  

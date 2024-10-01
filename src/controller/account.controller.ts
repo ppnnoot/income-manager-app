@@ -5,6 +5,14 @@ import { Message } from "../models/message.type";
 import { Account } from "../models/account.type";
 import { Request, Response } from 'express';
 
+
+export const getAccountById = async (accountId: number): Promise<Account | null> => {
+    const db = await connectDB();
+    const account = await db.collection('accounts').findOne({ accountId }) as Account | null;
+
+    return account ?? null;
+};
+
 export const getAccount = async ( req: CustomRequest, res: TypedResponse<Message> ): Promise<void> => {
     const { id } = req.params; // ดึง accountId จาก params
     const { userId } = req;
