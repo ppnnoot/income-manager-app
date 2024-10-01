@@ -1,32 +1,17 @@
-const BadWordsNext = require('bad-words-next')
+const badWordsList: string[] = ['badword1', 'badword2', 'badword3'];
 
-// Load data for each language
-const en = require('bad-words-next/data/en.json')
-const es = require('bad-words-next/data/es.json')
-const fr = require('bad-words-next/data/fr.json')
-const de = require('bad-words-next/data/de.json')
-const ru = require('bad-words-next/data/ru.json')
-const rl = require('bad-words-next/data/ru_lat.json')
-const ua = require('bad-words-next/data/ua.json')
-const pl = require('bad-words-next/data/pl.json')
-const ch = require('bad-words-next/data/ch.json')
+export const hasProfanity = (text: string): boolean => {
+    const lowerCaseText = text.toLowerCase();
+    return badWordsList.some(badWord => lowerCaseText.includes(badWord));
+};
 
+export const censorProfanity = async (text: string): Promise<string> => {
+    let censoredText = text;
 
-// Create a BadWordsNext instance
-const badwords = new BadWordsNext()
-badwords.add(en)
-badwords.add(es)
-badwords.add(fr)
-badwords.add(de)
-badwords.add(ru)
-badwords.add(rl)
-badwords.add(ua)
-badwords.add(pl)
-badwords.add(ch)
+    for (const badWord of badWordsList) {
+        const regex = new RegExp(`\\b${badWord}\\b`, 'gi');
+        censoredText = censoredText.replace(regex, '***');
+    }
 
-export const profanity = async (text: string): Promise<{ cleanedText: string }> => {
-    
-    const cleanedText = badwords.clean(text);
-
-    return cleanedText;
+    return censoredText;
 };

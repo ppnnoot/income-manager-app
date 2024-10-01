@@ -3,7 +3,8 @@ import { connectDB } from "../db";
 import { Message } from "../models/message.type";
 import { getAccountById } from "./account.controller";
 import { getCategory, getCategoryById } from "./category.controller";
-import { profanity } from "../utils/profanity";
+import { censorProfanity } from "../utils/profanity";
+import { paginateTransactions } from "../utils/pagination";
 
 
 export const createTransaction = async (req: CustomRequest, res: TypedResponse<Message>) => {
@@ -17,8 +18,7 @@ export const createTransaction = async (req: CustomRequest, res: TypedResponse<M
     try {
         const account = await getAccountById(accountId);
         const category = await getCategoryById(categoryId);
-        const noteCleaned = await profanity(note);
-        
+        const noteCleaned = await censorProfanity(note);
 
         if (!account) {
             return res.status(404).json({ message: 'Account not found' });
@@ -61,16 +61,38 @@ export const createTransaction = async (req: CustomRequest, res: TypedResponse<M
     }
 }
 
-export const getTransactions = async (req: CustomRequest, res: TypedResponse<Message>) : Promise<void> => {
-    const { userId } = req;
+export const getTransactions = async (req: CustomRequest, res: TypedResponse<Message>): Promise<void> => {
+    const  userId  = req.userId;
+
+    if (!userId) {
+        return res.status(400).json({ message: 'Auhorization failed' });
+    }
 
     try {
         const database = await connectDB();
-        const transactions = await database.collection('transactions').find({ userId }).toArray();
-        return res.status(200).json({ message: 'Transactions retrieved successfully', transactions });
-    
+        const page = req.query.page;
+        const limit = req.query.limit;
+        
+        // if query parameters exist, use pagination
+        if (page !== null || limit !== null) {
+
+            const paginatResult = await paginateTransactions(database, userId, req.query);
+
+            return res.status(200).json({
+                message: 'Transactions retrieved successfully',
+                transactions: paginatResult.transactions,
+                currentPage: paginatResult.currentPage,
+                totalPages: paginatResult.totalPages,
+                totalTransactions: paginatResult.totalTransactions
+            });
+        } else {
+
+            const transactions = await database.collection('transactions').find({ userId }).toArray();
+            return res.status(200).json({ message: 'All transactions retrieved successfully', transactions });
+        }
     } catch (error) {
         console.error('Error retrieving transactions:', error);
         return res.status(500).json({ message: 'Internal server error' });
     }
-}
+};
+ 
