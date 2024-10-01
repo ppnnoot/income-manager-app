@@ -6,7 +6,7 @@ import route from "./route";
 
 dotenv.config();
   
-const app = express();import winston from 'express-winston';
+const app = express();
 
 const PORT = process.env.PORT || 3000
 

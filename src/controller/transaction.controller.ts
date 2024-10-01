@@ -3,7 +3,7 @@ import { connectDB } from "../db";
 import { Message } from "../models/message.type";
 import { getAccountById } from "./account.controller";
 import { getCategory, getCategoryById } from "./category.controller";
-// import { filterBadWords } from "../utils/badword";
+import { profanity } from "../utils/profanity";
 
 
 export const createTransaction = async (req: CustomRequest, res: TypedResponse<Message>) => {
@@ -17,7 +17,7 @@ export const createTransaction = async (req: CustomRequest, res: TypedResponse<M
     try {
         const account = await getAccountById(accountId);
         const category = await getCategoryById(categoryId);
-        // const noteFiltered = await filterBadWords(note);
+        const noteCleaned = await profanity(note);
         
 
         if (!account) {
@@ -47,7 +47,7 @@ export const createTransaction = async (req: CustomRequest, res: TypedResponse<M
             },
             amount : Number(amount),
             slip : slip || null,
-            // note : noteFiltered || null,
+            note : noteCleaned || null,
             createdAt: new Date(),
             userId: userId
         };
