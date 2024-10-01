@@ -3,6 +3,7 @@ import { connectDB } from "../db";
 import { Message } from "../models/message.type";
 import { getAccountById } from "./account.controller";
 import { getCategory, getCategoryById } from "./category.controller";
+// import { filterBadWords } from "../utils/badword";
 
 
 export const createTransaction = async (req: CustomRequest, res: TypedResponse<Message>) => {
@@ -16,6 +17,8 @@ export const createTransaction = async (req: CustomRequest, res: TypedResponse<M
     try {
         const account = await getAccountById(accountId);
         const category = await getCategoryById(categoryId);
+        // const noteFiltered = await filterBadWords(note);
+        
 
         if (!account) {
             return res.status(404).json({ message: 'Account not found' });
@@ -44,7 +47,7 @@ export const createTransaction = async (req: CustomRequest, res: TypedResponse<M
             },
             amount : Number(amount),
             slip : slip || null,
-            note : note || null,
+            // note : noteFiltered || null,
             createdAt: new Date(),
             userId: userId
         };
