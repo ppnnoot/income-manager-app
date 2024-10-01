@@ -40,7 +40,6 @@ export const registerUser = async (req: TypedRequestBody<User>, res: TypedRespon
     const hashedPassword = await hashPassword(password);
     await createUser({ username, password: hashedPassword });
 
-    console.log('Registered successfully' + username);
     return res.status(201).json({ message: 'Registered successfully' });
 };
 
@@ -63,8 +62,7 @@ export const loginUser = async (req: TypedRequestBody<User>, res: TypedResponse<
     }
 
     const accessToken = await generateAccessToken(user._id.toString());
-    console.log(accessToken)
-
+    
     // Login successful)
     console.log('Login successful');
     return res.status(200).json({ 
