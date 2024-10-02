@@ -6,6 +6,10 @@ dotenv.config();
 
 let db: Db | null = null;
 
+if (!process.env.MONGODB_URI) {
+    console.error("Please add your MONGODB_URI to .env.local");
+}
+
 export const connectDB = async (): Promise<Db> => {
     try {
         if (!db) {

@@ -5,6 +5,7 @@ import { getUserById, loginUser, registerUser } from './controller/user.controll
 import { createAccount, deleteAccount, getAccounts, getAccount } from './controller/account.controller';
 import { createCategory, deleteCategory, getCategories, getCategory } from './controller/category.controller';
 import { createTransaction, getTransactions } from './controller/transaction.controller';
+import upload, { uploadFile } from './utils/upload';
 
 
 const router = express.Router();
@@ -12,6 +13,9 @@ const router = express.Router();
 
 router.post('/login', loginUser);
 router.post('/register', registerUser);
+router.get('/user/', authenticate);
+router.get('/user/transactions', authenticate);
+
 // router.get('/user/:id', authenticate, getUser);
 
 
@@ -29,6 +33,8 @@ router.delete('/category/:id', authenticate, deleteCategory);
 
 router.post('/transaction', authenticate, createTransaction);
 router.get('/transactions', authenticate, getTransactions);
+
+router.post('/upload', authenticate, upload.single('slip'), uploadFile);
 
 export default router;
  

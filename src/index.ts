@@ -14,6 +14,7 @@ app.use(bodyParser.json());
 
 app.use("/", route); 
 
+
 const startServer = async () => {
     await connectDB();
     app.listen(PORT, () => {

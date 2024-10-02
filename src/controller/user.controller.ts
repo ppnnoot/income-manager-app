@@ -69,7 +69,8 @@ export const loginUser = async (req: TypedRequestBody<User>, res: TypedResponse<
         message: 'Login successful',
         user: { 
             id: user._id, 
-            username: user.username, 
+            username: user.username,
+            balance: 0,
             token: `Bearer ${user._id}-${accessToken.token}`,
         }
     });
