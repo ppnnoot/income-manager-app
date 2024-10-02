@@ -10,13 +10,19 @@
 
 ## Concept
 This system is designed to enable users to:
+
 -   **Create user accounts**: Users can register and log in securely to access the system.
 -   **Hash passwords and authenticate using UUID Token**: User passwords are securely hashed, and UUID tokens are used for authentication to ensure secure access.
+-   
 -   **Summarize expenses**: Users can filter and summarize expenses by day, month, and year for better financial tracking.
 -   **Profanity filtering**: The system implements profanity filtering for any notes attached to expense records, ensuring appropriate content.
+-   
 -   **Pagination**: Pagination is implemented to efficiently handle large datasets, allowing users to navigate through data page by page.
+-   
 -   **Manage accounts and expense categories**: Users can manage their accounts and associated expense categories within the system.
+-   
 -   **Record and view transactions**: Users can log financial transactions and easily retrieve past transaction records.
+-   
 -   **File upload and management**: The system supports secure file uploads, such as images of receipts, and stores them within the system.
 
 
@@ -32,11 +38,11 @@ This system is designed to enable users to:
 ## Installation
 1. Clone this repository:
 
-	      `https://github.com/ppnnoot/income-manager-app.git`
+	      	`https://github.com/ppnnoot/income-manager-app.git`
 
 2. Install dependencies:
 
-	    `cd income-manager-app`
+	    	`cd income-manager-app`
 		`npm install`
 
 3. Set up environment variables in the `.env` file based on the `.env` file.
@@ -50,7 +56,7 @@ Below are the available API routes for managing users, accounts, categories, tra
 ### User Route
   
 	 `POST /login` 		// Authenticates a user and returns an access token.
-	 `POST /register` 	//Registers a new user.
+	 `POST /register` 	// Registers a new user.
 
 __
 ### Account Routes
@@ -58,7 +64,7 @@ __
 	`GET /accounts` 		// Retrieves all accounts associated with the authenticated
 	`GET /accounts/:id 		// Retrieves the details of a specific account by ID.
 	`POST /accounts`		// Creates a new account for the authenticated user.
-	`DELETE /accounts/:id` 	// Deletes an account by ID authenticated user.
+	`DELETE /accounts/:id` 		// Deletes an account by ID authenticated user.
  
 ___
 ### Category Routes
@@ -66,13 +72,12 @@ ___
 	`GET /category` 		// Retrieves all category
 	`GET /category/:id 		// Retrieves the details of a specific category by ID.
 	`POST /category`		// Creates a new category
-	`DELETE /category/:id` 	// Deletes an category by ID
+	`DELETE /category/:id` 		// Deletes an category by ID
 ___
 ### Transaction Routes
 
 	`GET  /transactions`			// Retrieves all transactions
-	`GET /transactions?page={}&limit={}`
-	`GET  /transactions/summary`	// Retrieves a summary, with support for pagination.
+	`GET  /transactions/summary`		// Retrieves a summary, with support for pagination.
 	`POST /transactions` 			// Create new Transactions
 
 
