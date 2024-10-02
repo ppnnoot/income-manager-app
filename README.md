@@ -52,7 +52,7 @@ Below are the available API routes for managing users, accounts, categories, tra
 	 `POST /login` 		// Authenticates a user and returns an access token.
 	 `POST /register` 	//Registers a new user.
 
----
+__
 ### Account Routes
 
 	`GET /accounts` 		// Retrieves all accounts associated with the authenticated
@@ -60,14 +60,14 @@ Below are the available API routes for managing users, accounts, categories, tra
 	`POST /accounts`		// Creates a new account for the authenticated user.
 	`DELETE /accounts/:id` 	// Deletes an account by ID authenticated user.
  
----
+___
 ### Category Routes
 
 	`GET /category` 		// Retrieves all category
 	`GET /category/:id 		// Retrieves the details of a specific category by ID.
 	`POST /category`		// Creates a new category
 	`DELETE /category/:id` 	// Deletes an category by ID
----
+___
 ### Transaction Routes
 
 	`GET  /transactions`			// Retrieves all transactions
@@ -125,7 +125,7 @@ Below are the available API routes for managing users, accounts, categories, tra
 	`POST /upload`	// Uploads a file (e.g., a transaction slip).
 
   
----
+___
 ### Authentication
 
 All routes except for `/login` and `/register` require a valid **Bearer Token** in the `Authorization` header:
