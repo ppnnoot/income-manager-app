@@ -13,16 +13,16 @@ This system is designed to enable users to:
 
 -   **Create user accounts**: Users can register and log in securely to access the system.
 -   **Hash passwords and authenticate using UUID Token**: User passwords are securely hashed, and UUID tokens are used for authentication to ensure secure access.
--   
+
 -   **Summarize expenses**: Users can filter and summarize expenses by day, month, and year for better financial tracking.
 -   **Profanity filtering**: The system implements profanity filtering for any notes attached to expense records, ensuring appropriate content.
--   
+ 
 -   **Pagination**: Pagination is implemented to efficiently handle large datasets, allowing users to navigate through data page by page.
--   
+
 -   **Manage accounts and expense categories**: Users can manage their accounts and associated expense categories within the system.
--   
+
 -   **Record and view transactions**: Users can log financial transactions and easily retrieve past transaction records.
--   
+
 -   **File upload and management**: The system supports secure file uploads, such as images of receipts, and stores them within the system.
 
 
