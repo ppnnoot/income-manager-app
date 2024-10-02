@@ -1,5 +1,5 @@
 import express from 'express';
-import { authenticate } from './middleware';
+import { auth } from './middleware';
 import { CustomRequest } from './interfaces/express.type';
 import { getUserById, loginUser, registerUser } from './controller/user.controller';
 import { createAccount, deleteAccount, getAccounts, getAccount } from './controller/account.controller';
@@ -13,28 +13,28 @@ const router = express.Router();
 
 router.post('/login', loginUser);
 router.post('/register', registerUser);
-router.get('/user/', authenticate);
-router.get('/user/transactions', authenticate);
+router.get('/user/', auth);
+router.get('/user/transactions', auth);
 
 // router.get('/user/:id', authenticate, getUser);
 
 
-router.get('/accounts', authenticate, getAccounts);
-router.post('/account', authenticate, createAccount);
-router.get('/account/:id', authenticate, getAccount);
-router.delete('/account/:id', authenticate, deleteAccount);
+router.get('/accounts', auth, getAccounts);
+router.post('/account', auth, createAccount);
+router.get('/account/:id', auth, getAccount);
+router.delete('/account/:id', auth, deleteAccount);
 
 
-router.get('/categories', authenticate, getCategories);
-router.post('/category', authenticate, createCategory);
-router.get('/category/:id', authenticate, getCategory);
-router.delete('/category/:id', authenticate, deleteCategory);
+router.get('/categories', auth, getCategories);
+router.post('/category', auth, createCategory);
+router.get('/category/:id', auth, getCategory);
+router.delete('/category/:id', auth, deleteCategory);
 
 
-router.post('/transaction', authenticate, createTransaction);
-router.get('/transactions', authenticate, getTransactions);
+router.post('/transaction', auth, createTransaction);
+router.get('/transactions', auth, getTransactions);
 
-router.post('/upload', authenticate, upload.single('slip'), uploadFile);
+router.post('/upload', auth, upload.single('slip'), uploadFile);
 
 export default router;
  

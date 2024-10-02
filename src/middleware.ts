@@ -3,7 +3,7 @@ import { CustomRequest, TypedResponse } from "./interfaces/express.type";
 import { Message } from "./models/message.type";
 
 
-export const authenticate = async ( 
+export const auth = async ( 
     req: CustomRequest, 
     res: TypedResponse<Message>, 
     next: NextFunction
