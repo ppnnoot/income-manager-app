@@ -11,7 +11,11 @@ export const auth = async (
 
     const token = req.headers['authorization'];
 
-    if (!token || !token.startsWith('Bearer ')) {
+    if (!token) {
+        return res.status(401).json({ message: 'Unauthorized, no token provided' });
+    }
+
+    if (!token.startsWith('Bearer ')) {
         return res.status(401).json({ message: 'Unauthorized, no token provided' });
     }
     

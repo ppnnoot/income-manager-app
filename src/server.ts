@@ -5,15 +5,14 @@ import dotenv from "dotenv";
 import route from "./route";
 
 dotenv.config();
-  
+
 const app = express();
 
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 
-app.use("/", route); 
-
+app.use("/", route);
 
 const startServer = async () => {
     await connectDB();
