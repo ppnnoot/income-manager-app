@@ -38,17 +38,17 @@ This system is designed to enable users to:
 ## Installation
 1. Clone this repository:
 
-	      	`https://github.com/ppnnoot/income-manager-app.git`
+       `https://github.com/ppnnoot/income-manager-app.git`
 
 2. Install dependencies:
 
-	    	`cd income-manager-app`
-		`npm install`
+       `cd income-manager-app`
+       `npm install`
 
 3. Set up environment variables in the `.env` file based on the `.env` file.
 4. Run the server:
 
-		`npm start`
+       `npm start`
 
 ## API Usage
 Below are the available API routes for managing users, accounts, categories, transactions, and file uploads.
